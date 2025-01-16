@@ -36,7 +36,7 @@
 - 小心地尝试带回弹效果的动画，除非你想要奖励动量（momentum）。[Start simple, not springy](https://youtu.be/gttSJA-kDmQ?t=2173)。  
   _比如一个卡片既可以点击关闭，又可以通过手势关闭。那么你可以仅给后者加入回弹。这就是奖励动量。_
 
-- `transform` 变化可能遇到毛边问题（jagged edges），用 `outline: 1px solid transparent` 解决。
+- `transform` 变化可能遇到[毛边问题](https://wxa.wxs.qq.com/wxad-design/yijie/431737016662_.pic.webp)（jagged edges），用 `outline: 1px solid transparent` 解决。
   _但是，会让内部元素稍微糊一点点，你不说设计师是不会发现的。这个方法类似于解决 `linear-gradient` 两个纯色切换的时候边缘锯齿的问题，也是加个 1px。_
 
 - `border-radius` 曲率不连续，特别是在 `rotate3d` 时我发现非常明显，可以用 [这个库](https://wxad.design/react-squircle/) 试试。
