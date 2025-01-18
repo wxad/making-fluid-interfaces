@@ -9,6 +9,8 @@
 - 有意识地减少动画的元素数量，将相同的多个元素安排在同一个父级上。  
   _和上一条一样，就像过你手的图片都要压缩，养成这个习惯。_
 
+- 视频一定要经过标准化压缩，否则在 WebView 初始化时会耗费很多时间，推荐使用 `handbrake` 压，恒定质量视情况在 `15` 至 `25` 之间。
+
 - `will-change` 在 Android 设备上的少许情况确实有用，但一般来说没有用。将其作为优化帧数的最后手段。
   _一般来说 CSS 动画没有什么问题，有问题的是 JS 动画。另外很多人建议不要滥用 `translateZ(0)`，从我的个人经验来看，非常滥用也无事发生。_
 
@@ -83,12 +85,30 @@
 
 # 微信 Webview 技巧
 
+- 自动播放视频或音频，需要在 `getNetworkType` 回调中播放。It just works。
+
 - 如果要实现头部颜色过渡，则必须以 JS 的方式设置过渡，也就是在 1 秒内设置 60 次。  
   _因此如果有其他过渡需要和头部变色同步，那么都需要放弃 CSS `transition`，统一使用这个偷鸡方法。_
 
-- 微信 Webview 可能在请求大量序列帧图片时直接崩溃，建议分批加载，且播一个序列帧就不要用 `lottie` 了，可以用 [这个](https://github.com/wxad/react-sequence-frame-player)。
+- 微信 Webview 可能在请求大量序列帧图片时直接崩溃，建议分批加载。另外，播一个序列帧就不要用 `lottie` 了，可以用 [这个](https://github.com/wxad/react-sequence-frame-player)。
+
+- `window.__wxWebEnv.getEnv()` 可以获取到用户设置的字体大小，以及微信头部高度等信息。具体类型 [看这里](https://github.com/wxad/wxad-vite-template/blob/main/typings/custom.d.ts#L40)。
 
 - 视频号半屏页中的 Webview 高度变化，Android 和 iOS 实现不同。前者需要用到 `onVisibleHeightChange` 这个 API。
+
+---
+
+# 微信公众号技巧
+
+- 用傻逼 Safari 开发，以傻逼 Safari 为准。
+
+- 没有字的元素统一加上 `font-size: 0;`，空容器统一加上 `height: 0;`。不然在保存的时候会变成 `&nbsp;`，就占高度了。我们碰到过用户还给 `&nbsp;` 划线的，就会显示出绿色的 dashed border bottom，很尴尬。
+
+- GIF 必须压缩，我的 mp4 转换工作流是：先使用 `ffmpeg` 先以 `25fps` 生成一张 palette，再以 `25fps` 生成 GIF。如果超过这个帧率就会造成卡顿。  
+  然后通过 `gifsicle` 看情况调整 `--lossy` 压，如果设计要求较高，就尽量往 10M 压。  
+  _ffmpeg -i input.mp4 -vf "fps=25,scale=700:-1:flags=lanczos,palettegen" palette.png_  
+  _ffmpeg -i input.mp4 -i palette.png -lavfi "fps=25,scale=700:-1:flags=lanczos [x]; [x][1:v] paletteuse" -loop 0 output.gif_  
+  _`gifsicle -O1 --lossy=5 output.gif -o optimized.gif`_
 
 ---
 
