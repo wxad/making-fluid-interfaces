@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => {
       // 页面最大宽度
       "import.meta.env.WIDTH": JSON.stringify(800),
       // 页面标题
-      "import.meta.env.TITLE": JSON.stringify("微信广告移动端模板"),
+      "import.meta.env.TITLE": JSON.stringify("Web 流畅界面建议"),
       // 朋友圈 & 会话分享标题
       "import.meta.env.SHARE_TITLE": JSON.stringify(
         "2024 Q2 用户最喜爱的朋友圈广告",
