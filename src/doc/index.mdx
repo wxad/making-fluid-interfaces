@@ -87,6 +87,8 @@
 
 - 自动播放视频或音频，需要在 `getNetworkType` 回调中播放。It just works。
 
+- 如果要在 Webview 关闭时做数据统计，在 Android 上使用 `pagehide` 事件，在 iOS 上使用特殊的 API `on('reportOnLeaveForMP', () => {})`。
+
 - 如果要实现头部颜色过渡，则必须以 JS 的方式设置过渡，也就是在 1 秒内设置 60 次。  
   _因此如果有其他过渡需要和头部变色同步，那么都需要放弃 CSS `transition`，统一使用这个偷鸡方法。_
 
