@@ -175,7 +175,7 @@ h1 {
 }
 
 ul {
-  @apply flex list-none flex-col gap-4 break-all text-[15px];
+  @apply flex list-none flex-col gap-5 break-all text-[15px];
 
   li {
     &::before {
@@ -186,7 +186,7 @@ ul {
 }
 
 em {
-  @apply mt-1 inline-block text-sm not-italic text-neutral-400;
+  @apply mt-1 inline-block text-sm not-italic text-neutral-500;
 }
 
 hr {
