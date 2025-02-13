@@ -208,7 +208,7 @@ Error generating stack: `+i.message+`
 `]}),`
 `,be.jsxs(pe.li,{children:[`
 `,be.jsxs(pe.p,{children:[be.jsx(pe.a,{href:"https://developer.apple.com/videos/play/wwdc2023/10194?time=457",children:"WWDC23 'Design dynamic Live Activities'"}),be.jsx(pe.br,{}),`
-`,be.jsx(pe.em,{children:"Chan 唯二出场的 WWDC Session。分享了关于灵动岛的设计。"})]}),`
+`,be.jsx(pe.em,{children:"Chan 第二次也是目前最后一次出场的 WWDC Session。分享了关于灵动岛的设计。"})]}),`
 `]}),`
 `,be.jsxs(pe.li,{children:[`
 `,be.jsxs(pe.p,{children:[be.jsx(pe.a,{href:"https://developer.apple.com/videos/play/wwdc2023/10158/",children:"WWDC23 'Animate with spring'"}),be.jsx(pe.br,{}),`
