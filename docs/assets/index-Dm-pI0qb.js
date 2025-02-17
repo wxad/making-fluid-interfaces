@@ -216,7 +216,7 @@ Error generating stack: `+i.message+`
 `]}),`
 `,ye.jsxs(fe.li,{children:[`
 `,ye.jsxs(fe.p,{children:[ye.jsx(fe.a,{href:"https://developer.apple.com/cn/design/human-interface-guidelines",children:"Apple 人机界面指南"}),ye.jsx(fe.br,{}),`
-`,"_相关章节：",ye.jsx(fe.a,{href:"https://developer.apple.com/cn/design/human-interface-guidelines/gestures",children:"手势"}),"，",ye.jsx(fe.a,{href:"https://developer.apple.com/cn/design/human-interface-guidelines/motion",children:"动态效果"})]}),`
+`,ye.jsxs(fe.em,{children:["相关章节：",ye.jsx(fe.a,{href:"https://developer.apple.com/cn/design/human-interface-guidelines/gestures",children:"手势"})," 与 ",ye.jsx(fe.a,{href:"https://developer.apple.com/cn/design/human-interface-guidelines/motion",children:"动态效果"}),"。"]})]}),`
 `]}),`
 `,ye.jsxs(fe.li,{children:[`
 `,ye.jsxs(fe.p,{children:[ye.jsx(fe.a,{href:"https://60fps.design/",children:"60fps.design"}),ye.jsx(fe.br,{}),`
