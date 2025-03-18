@@ -47,7 +47,7 @@
   `ease-in` 的另一个“问题”在于：如果你的动画基于弹簧模型，那么就不可能模拟出一个 `ease-in` 的表现（即便 velocity 为负值）。你可以观察一下 iOS 的表现。我的建议是只使用 `ease-out`。_
 
 - 同时考虑曲线和时间，抛开一个谈另一个是没有意义的，重要的是保证动画可 [被打断或跳过](https://wxad.design/abc/making-fluid-interfaces#%E5%8F%AF%E6%89%93%E6%96%AD%EF%BC%8C%E5%8F%AF%E5%8F%8D%E6%82%94)。  
-  _“交互动画必须 `200ms` 以下”这种说法都没有意义，抛开曲线表现差异很大的。我经常用 `0.7s` 的 `transition`。  
+  _“动效必须 `200ms` 以下”这种说法都没有意义，抛开曲线表现差异很大的。我经常用 `0.7s` 的 `transition`。  
   明白参数本身并不重要，时间只是物体运动的结果。_
 
 - `transform` 变化可能遇到 [毛边问题](https://wxa.wxs.qq.com/wxad-design/yijie/431737016662_.pic.webp)（jagged edges），用 `outline: 1px solid transparent` 解决。
@@ -102,20 +102,21 @@
 
 - `window.__wxWebEnv.getEnv()` 可以获取到用户设置的字体大小，以及微信头部高度等信息。具体类型 [看这里](https://github.com/wxad/wxad-vite-template/blob/main/typings/custom.d.ts#L40)。
 
-- 视频号半屏页中的 Webview 高度变化，Android 和 iOS 实现不同。前者需要用到 `onVisibleHeightChange` 这个 API。
+- 视频号半屏页中的 Webview 高度变化，Android 和 iOS 实现不同。前者需要用到 `onVisibleHeightChange` 这个 API，非常麻烦。
 
 ---
 
 # 微信公众号技巧
 
-- 用傻逼 Safari 开发，以傻逼 Safari 为准。
+- 用 Safari 开发，以 Safari 为准。  
+  _废物 Safari。_
 
 - 没有字的元素统一加上 `font-size: 0;`，空容器统一加上 `height: 0;`。不然在保存的时候会变成 `&nbsp;`，就占高度了。我们碰到过用户还给 `&nbsp;` 划线的，就会显示出绿色的 dashed border bottom，很尴尬。
 
 - GIF 必须压缩，我的 mp4 转换工作流是：先使用 `ffmpeg` 先以 `25fps` 生成一张 palette，再以 `25fps` 生成 GIF。如果超过这个帧率就会造成卡顿。  
   然后通过 `gifsicle` 看情况调整 `--lossy` 压，如果设计要求较高，就尽量往 10M 压。  
-  _ffmpeg -i input.mp4 -vf "fps=25,scale=700:-1:flags=lanczos,palettegen" palette.png_  
-  _ffmpeg -i input.mp4 -i palette.png -lavfi "fps=25,scale=700:-1:flags=lanczos [x]; [x][1:v] paletteuse" -loop 0 output.gif_  
+  _`ffmpeg -i input.mp4 -vf "fps=25,scale=700:-1:flags=lanczos,palettegen" palette.png`_  
+  _`ffmpeg -i input.mp4 -i palette.png -lavfi "fps=25,scale=700:-1:flags=lanczos [x]; [x][1:v] paletteuse" -loop 0 output.gif`_  
   _`gifsicle -O1 --lossy=5 output.gif -o optimized.gif`_
 
 ---
@@ -123,7 +124,7 @@
 # 学习 Resources
 
 - [WWDC18 'Designing Fluid Interfaces'](https://developer.apple.com/videos/play/wwdc2018/803)  
-  _来自 Chan Karunamuni。强烈推荐。自工作重点放在交互动画后，它就是指引我的灯塔。常看常新。  
+  _来自 Chan Karunamuni。强烈推荐。在交互动画这个领域，它就是指引我的灯塔。常看常新。  
   求求你了去看行吗，这是我一生的请求。_
 
 - [WWDC23 'Design dynamic Live Activities'](https://developer.apple.com/videos/play/wwdc2023/10194?time=457)  
@@ -152,3 +153,9 @@
 
 - [Matt Perry](https://x.com/mattgperry)  
   _motion 作者，关注 motion 的最新发展。_
+
+---
+
+_我们做的事远比拉一条贝塞尔曲线有趣得多。要花更多的时间去做快速验证。_
+
+_要让视觉与交互不可分割；要让流畅本身成为一种媒介；要做好玩的事，对，只是做流畅的界面而已。_
