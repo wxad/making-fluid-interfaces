@@ -1,9 +1,9 @@
 # 性能 Optimization
 
-- **重要：尽量使用 GPU 加速的 CSS 动画，而不是 JS API**。除非你在做一种交互动画。  
+- **重要：尽量使用 GPU 加速的 CSS 动画，而不是 JS API**。除非你在制作一种交互动画。  
   _我的经验是 CSS `transition` 一般不需要优化，在低端机型上表现也非常好，而 JS 差距非常大。_  
-  _如果你需要的曲线 `cubic-bezier()` 满足不了，你可以使用 `linear()` 或者依赖 [`motion` 的 `spring` 方法](https://examples.motion.dev/react/css-spring)。你还是不需要 JS 动画。_  
-  _总之除非你在做基于 Spring 的交互动画，一般并不需要选择 `motion` 这样的库。_
+  _如果你只是需要一个模拟弹簧的曲线而 `cubic-bezier()` 满足不了，那么你可以使用 `linear()` 或者依赖 [`motion` 的 `spring` 方法](https://examples.motion.dev/react/css-spring)。你仍然不需要 JS 动画。_  
+  _总之除非你在制作交互动画，一般并不需要选择 `motion` 这样的库。_
 
 - 有意识地减少重排重绘，尽量且真的尽力用 `transform` 替代 `width` / `height`。  
   _有时候尺寸变化用 `transform` 是很麻烦，还要改变其他元素的位置。但这是值得的。_
@@ -17,7 +17,8 @@
   _一般来说 CSS 动画没有什么问题，有问题的是 JS 动画。另外很多人建议不要滥用 `translateZ(0)`，从我的个人经验来看，非常滥用也无事发生。_
 
 - 元素动画不要依赖 React 状态，而是操作 DOM 或使用 `motion` 这样的库。
-  _如果是简单的状态 toggle，或是和逻辑相关的状态是适合依赖 React 状态驱动的。不要觉得写 `dom.style.transform` 很丑，动画复杂起来怎么写都丑。_
+  _如果是简单的状态 toggle，或是和逻辑相关的状态是适合依赖 React 状态驱动的。  
+  不要觉得写 `dom.style.transform` 很丑，动画复杂起来怎么写都丑。_
 
 - `filter` 的动画非常消耗性能，`blur` 是很优雅，但是大部分情况我都删了。  
   _有时候我会判断如果是 Android，则删除..._
@@ -30,7 +31,7 @@
 # 动画 Animation
 
 - 伴随不透明度的缩放动画（如 Dialog）不要以 `0` 作为开始和结束的值，一般保持在 `0.5` 以上。
-  _不要让用户看到元素从一个虚空出现或是被吸进了屏幕，很丑。_
+  _用户很容易注意到元素从一个点出现或是被吸进了屏幕的一个点。这是不必要的。_
 
 - 按钮 `active` 如果要缩小，一般 `0.96` 甚至更大就够了；如果是放大，一般 `1.04` 就够了。
 
@@ -39,13 +40,15 @@
 - 不透明度与位移应该是不同步的。具体而言，在添加时，透明度应该是后变化的；在删除时，透明度应该是先变化的；[参考](https://wxad.design/abc/functional-motion#%E6%B7%BB%E5%8A%A0%E5%92%8C%E5%88%A0%E9%99%A4%E7%9A%84%E7%BB%86%E8%8A%82%EF%BC%9Aalert-/-tag)。
 
 - 小心地尝试带回弹效果的动画，除非你想要奖励动量（momentum）。[Start simple, not springy](https://youtu.be/gttSJA-kDmQ?t=2173)。  
-  _比如一个卡片既可以点击关闭，又可以通过手势关闭。那么你可以仅给后者加入回弹。这就是奖励动量。_
+  _比如一个卡片既可以点击关闭，又可以通过手势关闭。那么你可以仅给后者加入回弹。这就是 [奖励动量](https://wxad.design/abc/making-fluid-interfaces#%E5%93%8D%E5%BA%94%E9%80%9F%E5%BA%A6%EF%BC%8C%E4%BF%9D%E6%8C%81%E6%83%AF%E6%80%A7%EF%BC%8C%E5%A5%96%E5%8A%B1%E5%8A%A8%E9%87%8F)。_
 
-- 不要使用或批判地看待类 `ease-in` 曲线，不要把交互动画和非交互（视觉）动画混为一谈。  
-  _为什么我关闭一个弹窗，要先慢后快呢？一辆汽车开出我的视野，它是先慢后快的，但我关闭弹窗应该越快越好。区别是我不再是被动的观看者，而是主动的操作者。而且如果你的动画基于弹簧，那么就不可能模拟出一个 `ease-in` 的表现，你可以观察一下 iOS 的表现。我的建议是只使用 `ease-out`。_
+- 不要使用或批判地看待类 `ease-in` 曲线，交互动画和非交互（视觉）动画是有差异的。  
+  _为什么我关闭一个弹窗，要先慢后快呢？一辆汽车开出我的视野，它是先慢后快的，但我关闭弹窗应该越快越好。区别是我不再是被动的观看者，而是主动的操作者。  
+  `ease-in` 的另一个“问题”在于：如果你的动画基于弹簧模型，那么就不可能模拟出一个 `ease-in` 的表现（即便 velocity 为负值）。你可以观察一下 iOS 的表现。我的建议是只使用 `ease-out`。_
 
-- 同时考虑曲线和时间，抛开一个谈另一个是没有意义的。重要的是保证动画可被打断或跳过。  
-  _“交互动画必须 `200ms` 以下”这种说法都没有意义，抛开曲线表现差异很大的。我经常用 `0.7s` 的 `transition`。_
+- 同时考虑曲线和时间，抛开一个谈另一个是没有意义的，重要的是保证动画可 [被打断或跳过](https://wxad.design/abc/making-fluid-interfaces#%E5%8F%AF%E6%89%93%E6%96%AD%EF%BC%8C%E5%8F%AF%E5%8F%8D%E6%82%94)。  
+  _“交互动画必须 `200ms` 以下”这种说法都没有意义，抛开曲线表现差异很大的。我经常用 `0.7s` 的 `transition`。  
+  明白参数本身并不重要，时间只是物体运动的结果。_
 
 - `transform` 变化可能遇到 [毛边问题](https://wxa.wxs.qq.com/wxad-design/yijie/431737016662_.pic.webp)（jagged edges），用 `outline: 1px solid transparent` 解决。
   _但是，会让内部元素稍微糊一点点，你不说设计师是不会发现的。这个方法类似于解决 `linear-gradient` 两个纯色切换的时候边缘锯齿的问题，也是加个 1px。_
@@ -87,7 +90,8 @@
 
 # 微信 Webview 技巧
 
-- 自动播放视频或音频，需要在 `getNetworkType` 回调中播放。It just works。
+- 自动播放视频或音频，需要在 `getNetworkType` 回调中播放。It just works。  
+  _还需要一套属性连招：`x-webkit-airplay="true"`、`webkit-playsinline="true"`、`playsInline`。_
 
 - 如果要在 Webview 关闭时做数据统计，在 Android 上使用 `pagehide` 事件，在 iOS 上使用特殊的 API `on('reportOnLeaveForMP', () => {})`。
 
@@ -119,7 +123,8 @@
 # 学习 Resources
 
 - [WWDC18 'Designing Fluid Interfaces'](https://developer.apple.com/videos/play/wwdc2018/803)  
-  _来自 Chan Karunamuni。无敌强烈推荐，我求求你了去看行吗，这是我一生的请求。_
+  _来自 Chan Karunamuni。强烈推荐。自工作重点放在交互动画后，它就是指引我的灯塔。常看常新。  
+  求求你了去看行吗，这是我一生的请求。_
 
 - [WWDC23 'Design dynamic Live Activities'](https://developer.apple.com/videos/play/wwdc2023/10194?time=457)  
   _Chan 第二次也是目前最后一次出场的 WWDC Session。分享了关于灵动岛的设计。_
@@ -131,7 +136,7 @@
   _相关章节：[手势](https://developer.apple.com/cn/design/human-interface-guidelines/gestures) 与 [动态效果](https://developer.apple.com/cn/design/human-interface-guidelines/motion)。_
 
 - [60fps.design](https://60fps.design/)  
-  _无敌。_
+  _无敌，绝大部分是交互相关的创意收集。_
 
 - [Chan Karunamuni](https://x.com/chan_k)  
   _灵动岛、iPhone X 手势、手电筒、AirDrop 等等的设计师。_
@@ -139,8 +144,11 @@
 - [Marcos Alonso](https://x.com/malonso)  
   _iPhone X 手势、iPhone 16 Camera Control、iPadOS Pointer、MacOS TouchBar 等等的设计师。_
 
-- [Rauno Freiberg](https://rauno.me/) & [Emil Kowalski](https://emilkowal.ski/)  
-  _两个人都（曾）在 Vercel 担任 [Design Engineer](https://vercel.com/blog/design-engineering-at-vercel)，我的楷模。_
+- [Rauno Freiberg](https://rauno.me/)  
+  _于 Vercel 担任 [Design Engineer](https://vercel.com/blog/design-engineering-at-vercel)，我的楷模。推荐他的课程 [Devouring Details](https://devouringdetails.com/)，即将开售。_
+
+- [Emil Kowalski](https://emilkowal.ski/)  
+  _曾于 Vercel、现于 linear 担任 Design Engineer，我的楷模。相对不推荐他的课程 [Animations on the Web](https://animations.dev/)。我没有购买，看上去更偏实践的部分。_
 
 - [Matt Perry](https://x.com/mattgperry)  
   _motion 作者，关注 motion 的最新发展。_
